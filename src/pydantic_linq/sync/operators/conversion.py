@@ -12,12 +12,20 @@ from ..base import EnumerableBase, deferred
 if TYPE_CHECKING:
     from typing import Self
 
+    from ...aio.enumerable import AsyncEnumerable
+
 
 class Conversion[T](EnumerableBase[T]):
     __slots__ = ()
 
     def as_enumerable(self) -> Self:
         return self
+
+    def to_async_enumerable(self) -> AsyncEnumerable[T]:
+        """ToAsyncEnumerable: enter the async operators."""
+        from ...aio.enumerable import AsyncEnumerable
+
+        return AsyncEnumerable(self)
 
     @deferred
     def cast[U](self, type_: type[U], *, strict: bool = False) -> Iterator[U]:

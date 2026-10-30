@@ -17,6 +17,18 @@ rows.group_by(lambda r: r.tag).select(lambda g: (g.key, len(g))).to_list()
 rows.order_by_descending(lambda r: r.id).then_by(lambda r: r.tag).first()
 ```
 
+## Async
+
+`AsyncEnumerable` covers System.Linq.Async. It wraps any sync or async iterable. Sequence operators are deferred, and terminal operators are awaited:
+
+```python
+async def load_age(r: Row) -> int: ...
+
+ages = await rows.to_async_enumerable().where(lambda r: r.id > 1).select(load_age).to_list()
+```
+
+A selector or predicate can be a plain function or an `async def`, so there are no separate `*Await` overloads. Terminal operators keep the sync names (`to_list`, `first`, `count`) and are awaited. The C# `Async` suffix is dropped.
+
 ## Conventions
 
 - Method names are the C# names in snake_case: `OrderByDescending` becomes `order_by_descending`. `Except` becomes `except_`, because `except` is a Python keyword.
@@ -43,5 +55,6 @@ src/pydantic_linq/
     enumerable.py Enumerable = all mixins
     ordered.py    OrderedEnumerable (then_by)
     lookup.py     Lookup
+  aio/            AsyncEnumerable, same layout as sync/
   integrations/   pydantic field schema, builtin patching
 ```

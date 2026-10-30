@@ -4,7 +4,7 @@ from collections.abc import Callable, Iterable, Iterator
 from typing import Any
 
 from .enumerable import Enumerable
-from .operators.sorting import Comparer, SortKey, sort
+from ..core.sorting import Comparer, SortKey, sort
 
 
 class OrderedEnumerable[T](Enumerable[T]):

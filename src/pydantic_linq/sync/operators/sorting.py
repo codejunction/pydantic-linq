@@ -6,37 +6,14 @@
 from __future__ import annotations
 
 import random
-from collections.abc import Callable, Iterable, Iterator
-from functools import cmp_to_key
+from collections.abc import Callable, Iterator
 from typing import TYPE_CHECKING, Any
 
+from ...core.sorting import Comparer, identity as _identity
 from ..base import EnumerableBase, deferred
 
 if TYPE_CHECKING:
     from ..ordered import OrderedEnumerable
-
-type Comparer = Callable[[Any, Any], int]
-type SortKey[T] = tuple[Callable[[T], Any], Comparer | None, bool]
-
-
-def _identity(x: Any) -> Any:
-    return x
-
-
-def sort[T](source: Iterable[T], keys: tuple[SortKey[T], ...]) -> list[T]:
-    """Stable multi-key sort matching LINQ's composite comparison.
-
-    Python's sort is stable (also with reverse=True), so sorting by the least significant key first is equivalent.
-    """
-    items = list(source)
-    for key, comparer, descending in reversed(keys):
-        if comparer is not None:
-            to_key = cmp_to_key(comparer)
-            items.sort(key=lambda x, key=key, to_key=to_key: to_key(key(x)), reverse=descending)
-        else:
-            items.sort(key=key, reverse=descending)
-    return items
-
 
 class Sorting[T](EnumerableBase[T]):
     __slots__ = ()
