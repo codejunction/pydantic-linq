@@ -9,7 +9,8 @@ import random
 from collections.abc import Callable, Iterator
 from typing import TYPE_CHECKING, Any
 
-from ...core.sorting import Comparer, identity as _identity
+from ...core.sorting import Comparer
+from ...core.sorting import identity as _identity
 from ..base import EnumerableBase, deferred
 
 if TYPE_CHECKING:

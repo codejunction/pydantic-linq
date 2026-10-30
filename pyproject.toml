@@ -3,8 +3,27 @@ name = "pydantic-linq"
 version = "0.1.0"
 description = "C# LINQ (Enumerable + AsyncEnumerable) for Python, typed and Pydantic-aware"
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.12"
+authors = [{ name = "Abhishek Dutta", email = "phoenixdutta@gmail.com" }]
+keywords = ["linq", "pydantic", "query", "iterator", "async", "functional", "collections"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Framework :: Pydantic :: 2",
+  "Typing :: Typed",
+  "Topic :: Software Development :: Libraries",
+]
 dependencies = ["pydantic>=2.7", "forbiddenfruit>=0.1.4"]
+
+[project.urls]
+Homepage = "https://github.com/codejunction/pydantic-linq"
+Source = "https://github.com/codejunction/pydantic-linq"
+Issues = "https://github.com/codejunction/pydantic-linq/issues"
 
 [dependency-groups]
 dev = ["pytest>=8"]
@@ -20,4 +39,3 @@ pythonpath = ["src"]
 [tool.pyright]
 venvPath = "."
 venv = ".venv"
-

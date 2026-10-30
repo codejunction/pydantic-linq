@@ -5,7 +5,16 @@ from __future__ import annotations
 from collections.abc import AsyncIterator
 from typing import TYPE_CHECKING
 
-from ..base import AnyIterable, AsyncEnumerableBase, Fn, call, deferred, group_async, iterate, wrap
+from ..base import (
+    AnyIterable,
+    AsyncEnumerableBase,
+    Fn,
+    call,
+    deferred,
+    group_async,
+    iterate,
+    wrap,
+)
 
 if TYPE_CHECKING:
     from ..enumerable import AsyncEnumerable

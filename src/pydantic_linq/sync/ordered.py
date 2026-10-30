@@ -3,8 +3,8 @@ from __future__ import annotations
 from collections.abc import Callable, Iterable, Iterator
 from typing import Any
 
-from .enumerable import Enumerable
 from ..core.sorting import Comparer, SortKey, sort
+from .enumerable import Enumerable
 
 
 class OrderedEnumerable[T](Enumerable[T]):

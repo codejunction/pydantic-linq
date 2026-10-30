@@ -6,7 +6,7 @@ from datetime import date
 
 from pydantic import BaseModel
 
-from pydantic_linq import AsyncEnumerable, Enumerable
+from pydantic_linq import Enumerable
 
 RAW_ORDERS = json.loads("""[
   {"id": 1, "customer": "acme",   "sku": "W-1", "qty": 3,  "day": "2026-03-01"},
