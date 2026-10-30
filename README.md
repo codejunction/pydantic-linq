@@ -54,7 +54,7 @@ src/pydantic_linq/
     operators/    one mixin per LINQ category: filtering, projection, partitioning, sets, sorting, ...
     enumerable.py Enumerable = all mixins
     ordered.py    OrderedEnumerable (then_by)
-    lookup.py     Lookup
+    grouping.py   Grouping (an Enumerable with .key), Lookup
   aio/            AsyncEnumerable, same layout as sync/
   integrations/   pydantic field schema, builtin patching
 ```
