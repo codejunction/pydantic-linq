@@ -1,0 +1,64 @@
+site_name: pydantic-linq
+site_description: C# LINQ for Python, typed and Pydantic-aware
+site_url: https://codejunction.github.io/pydantic-linq/
+repo_url: https://github.com/codejunction/pydantic-linq
+repo_name: codejunction/pydantic-linq
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - search.suggest
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      toggle: { icon: material/brightness-7, name: Dark mode }
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      toggle: { icon: material/brightness-4, name: Light mode }
+
+nav:
+  - Home: index.md
+  - Guide:
+      - Getting started: getting-started.md
+      - Operator map (C# to Python): operators.md
+      - Async: async.md
+      - Pydantic: pydantic.md
+      - Builtin patching: builtins.md
+      - Examples: examples.md
+  - API reference:
+      - Enumerable: api/enumerable.md
+      - AsyncEnumerable: api/async-enumerable.md
+      - Grouping, Lookup, errors: api/misc.md
+  - Changelog: changelog.md
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc: { permalink: true }
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.snippets: { base_path: ["."], check_paths: true }
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            show_source: false
+            show_root_heading: true
+            show_if_no_docstring: true
+            inherited_members: true
+            members_order: alphabetical
+            filters: ["!^_"]
+            show_signature_annotations: true
+            separate_signature: true
+            docstring_style: google
+            merge_init_into_class: true

@@ -27,6 +27,7 @@ Issues = "https://github.com/codejunction/pydantic-linq/issues"
 
 [dependency-groups]
 dev = ["pytest>=8"]
+docs = ["mkdocs-material>=9.5", "mkdocstrings[python]>=0.26"]
 
 [build-system]
 requires = ["hatchling"]

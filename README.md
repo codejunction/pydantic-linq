@@ -1,6 +1,17 @@
 # pydantic-linq
 
-C# LINQ (`System.Linq.Enumerable`) for Python. It is typed and works with Pydantic.
+[![PyPI](https://img.shields.io/pypi/v/pydantic-linq)](https://pypi.org/project/pydantic-linq/)
+[![Python](https://img.shields.io/pypi/pyversions/pydantic-linq)](https://pypi.org/project/pydantic-linq/)
+[![CI](https://github.com/codejunction/pydantic-linq/actions/workflows/ci.yml/badge.svg)](https://github.com/codejunction/pydantic-linq/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/badge/docs-github%20pages-blue)](https://codejunction.github.io/pydantic-linq/)
+
+C# LINQ for Python. It has every `System.Linq` and `System.Linq.Async` operator, is fully typed, and works with Pydantic models.
+
+**Documentation:** https://codejunction.github.io/pydantic-linq/
+
+```bash
+pip install pydantic-linq
+```
 
 ```python
 from pydantic import BaseModel
@@ -12,8 +23,8 @@ class Row(BaseModel):
 
 rows = [Row(id=1, tag="a"), Row(id=2, tag="b"), Row(id=3, tag="a")]
 
-rows.where(lambda r: r.tag == "a").select(lambda r: r.id).to_list()   # [1, 3]
-rows.group_by(lambda r: r.tag).select(lambda g: (g.key, len(g))).to_list()
+rows.where(lambda r: r.tag == "a").select(lambda r: r.id).to_list()            # [1, 3]
+rows.group_by(lambda r: r.tag).select(lambda g: (g.key, g.count())).to_list()  # [('a', 2), ('b', 1)]
 rows.order_by_descending(lambda r: r.id).then_by(lambda r: r.tag).first()
 ```
 
@@ -31,11 +42,12 @@ A selector or predicate can be a plain function or an `async def`, so there are 
 
 ## Conventions
 
-- Method names are the C# names in snake_case: `OrderByDescending` becomes `order_by_descending`. `Except` becomes `except_`, because `except` is a Python keyword.
+- Method names are the C# names in snake_case: `OrderByDescending` becomes `order_by_descending`. `Except` becomes `except_`, because `except` is a Python keyword. The [operator map](https://codejunction.github.io/pydantic-linq/operators/) lists every operator.
 - Operators that return a sequence are deferred and can be enumerated again, as in .NET.
 - Equality uses value semantics (`==`). Non-frozen (unhashable) pydantic models work in `distinct`, `union` and the other set operators.
 - `cast(Model)` validates each element with a pydantic `TypeAdapter`, so dicts become models. `of_type(Model)` filters with `isinstance`.
 - `Enumerable[Model]` can be a pydantic field type. It validates like `list[Model]` and serializes as a list.
+- `group_by` yields `Grouping` objects. Each is itself an `Enumerable` with a `.key`.
 - C# `KeyValuePair` becomes a `(key, value)` tuple. `IComparer` becomes a `cmp(a, b) -> int` function. A C# `Range` or `Index` (for example `^1`) becomes a slice or a negative int.
 - Lambda overloads that take an index (`Select((x, i) => ...)`) map to `.index()`, followed by the operator.
 - Empty-sequence errors raise `InvalidOperationError`, which subclasses `ValueError`.
@@ -44,11 +56,15 @@ A selector or predicate can be a plain function or an `async def`, so there are 
 
 Importing the package uses [forbiddenfruit](https://github.com/clarete/forbiddenfruit) to patch `list`, `tuple`, `set` and `frozenset`. A builtin method that already exists keeps its Python meaning, for example `list.count(x)` and `list.reverse()`. To get the LINQ version, use `rows.as_enumerable().count()`. Type checkers do not see the patched methods. Where you need static types, use `Enumerable(rows)`. To remove the patches, call `pydantic_linq.uninstall()`.
 
+## Examples
+
+`examples/` runs from simple to complex: `01_basics` through `07_sales_report`, an end-to-end report pipeline. Run any of them with `uv run python examples/01_basics.py`.
+
 ## Layout
 
 ```
 src/pydantic_linq/
-  core/           errors, value-equality set, Grouping (no internal deps)
+  core/           errors, value-equality set, group and sort helpers (no internal deps)
   sync/
     base.py       EnumerableBase, deferred execution
     operators/    one mixin per LINQ category: filtering, projection, partitioning, sets, sorting, ...
@@ -57,9 +73,13 @@ src/pydantic_linq/
     grouping.py   Grouping (an Enumerable with .key), Lookup
   aio/            AsyncEnumerable, same layout as sync/
   integrations/   pydantic field schema, builtin patching
+docs/             documentation site (MkDocs); the API reference is generated from the docstrings
 ```
 
-## Examples
+## Contributing
 
-`examples/` runs from simple to complex: `01_basics` through `07_sales_report`, an end-to-end report pipeline. Run any of them with `uv run python examples/01_basics.py`.
+Every code change also updates `CHANGELOG.md` (under `[Unreleased]`) and the docs in `docs/`. See [CLAUDE.md](CLAUDE.md) for the checks and the release steps.
 
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md).
