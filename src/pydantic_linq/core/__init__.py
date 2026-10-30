@@ -2,7 +2,7 @@
 
 from .equality import EqSet
 from .errors import InvalidOperationError
-from .grouping import Grouping, group
+from .grouping import group
 from .sentinel import MISSING
 
-__all__ = ["MISSING", "EqSet", "Grouping", "InvalidOperationError", "group"]
+__all__ = ["MISSING", "EqSet", "InvalidOperationError", "group"]

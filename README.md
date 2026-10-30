@@ -58,3 +58,8 @@ src/pydantic_linq/
   aio/            AsyncEnumerable, same layout as sync/
   integrations/   pydantic field schema, builtin patching
 ```
+
+## Examples
+
+`examples/` runs from simple to complex: `01_basics` through `07_sales_report`, an end-to-end report pipeline. Run any of them with `uv run python examples/01_basics.py`.
+

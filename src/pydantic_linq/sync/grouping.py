@@ -1,13 +1,24 @@
 from __future__ import annotations
 
 from collections.abc import Iterable, Iterator
-from typing import TYPE_CHECKING
 
-from ..core import Grouping
-from .base import wrap
+from .enumerable import Enumerable
 
-if TYPE_CHECKING:
-    from .enumerable import Enumerable
+
+class Grouping[K, T](Enumerable[T]):
+    """IGrouping<TKey, TElement>: a keyed Enumerable."""
+
+    __slots__ = ("key",)
+
+    def __init__(self, key: K, items: list[T]) -> None:
+        super().__init__(items)
+        self.key = key
+
+    def __len__(self) -> int:
+        return len(self._source)  # type: ignore[arg-type]
+
+    def __repr__(self) -> str:
+        return f"Grouping({self.key!r}, {self._source!r})"
 
 
 class Lookup[K, T](Iterable[Grouping[K, T]]):
@@ -15,12 +26,11 @@ class Lookup[K, T](Iterable[Grouping[K, T]]):
 
     __slots__ = ("_groups",)
 
-    def __init__(self, groups: dict[K, Grouping[K, T]]) -> None:
-        self._groups = groups
+    def __init__(self, groups: dict[K, list[T]]) -> None:
+        self._groups = {k: Grouping(k, v) for k, v in groups.items()}
 
     def __getitem__(self, key: K) -> Enumerable[T]:
-        group = self._groups.get(key)
-        return wrap(group if group is not None else ())
+        return self._groups.get(key) or Enumerable(())
 
     def __contains__(self, key: object) -> bool:
         return key in self._groups

@@ -12,7 +12,7 @@ from functools import wraps
 from operator import itemgetter
 from typing import TYPE_CHECKING, Any, ClassVar
 
-from ..core import Grouping, group
+from ..core import group
 
 if TYPE_CHECKING:
     from .enumerable import AsyncEnumerable
@@ -40,7 +40,7 @@ async def iterate[T](source: AnyIterable[T]) -> AsyncIterator[T]:
 
 async def group_async[K, T, E](
     source: AnyIterable[T], key_selector: Fn[[T], K], element_selector: Fn[[T], E] | None = None
-) -> dict[K, Grouping[K, E]]:
+) -> dict[K, list[E]]:
     """core.group with sync-or-async selectors."""
     pairs = [
         (await call(key_selector, x), await call(element_selector, x) if element_selector else x)

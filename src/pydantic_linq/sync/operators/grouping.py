@@ -5,12 +5,12 @@ from __future__ import annotations
 from collections.abc import Callable, Iterator
 from typing import TYPE_CHECKING, Any, overload
 
-from ...core import Grouping, group
+from ...core import group
 from ..base import EnumerableBase, defer, wrap
-from ..lookup import Lookup
 
 if TYPE_CHECKING:
     from ..enumerable import Enumerable
+    from ..grouping import Grouping, Lookup
 
 
 class GroupingOps[T](EnumerableBase[T]):
@@ -37,9 +37,11 @@ class GroupingOps[T](EnumerableBase[T]):
         *,
         result_selector: Callable[[Any, Enumerable[Any]], Any] | None = None,
     ) -> Enumerable[Any]:
+        from ..grouping import Grouping
+
         def gen() -> Iterator[Any]:
             for key, items in group(self, key_selector, element_selector).items():
-                yield result_selector(key, wrap(items)) if result_selector else items
+                yield result_selector(key, wrap(items)) if result_selector else Grouping(key, items)
 
         return defer(gen)
 
@@ -50,4 +52,6 @@ class GroupingOps[T](EnumerableBase[T]):
     def to_lookup(
         self, key_selector: Callable[[T], Any], element_selector: Callable[[T], Any] | None = None
     ) -> Lookup[Any, Any]:
+        from ..grouping import Lookup
+
         return Lookup(group(self, key_selector, element_selector))
