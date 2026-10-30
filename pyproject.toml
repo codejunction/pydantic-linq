@@ -1,0 +1,23 @@
+[project]
+name = "pydantic-linq"
+version = "0.1.0"
+description = "C# LINQ (Enumerable + AsyncEnumerable) for Python, typed and Pydantic-aware"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["pydantic>=2.7", "forbiddenfruit>=0.1.4"]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+
