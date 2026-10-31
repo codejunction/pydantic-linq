@@ -743,7 +743,7 @@ wheels = [
 
 [[package]]
 name = "pydantic-linq"
-version = "0.1.0"
+version = "0.1.1"
 source = { editable = "." }
 dependencies = [
     { name = "forbiddenfruit" },

@@ -4,6 +4,8 @@ All notable changes to pydantic-linq are listed here. The format follows [Keep a
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-31
+
 ### Added
 
 - Documentation site on GitHub Pages: guides, a C# to Python operator map, and an API reference generated from the docstrings.
@@ -31,5 +33,6 @@ All notable changes to pydantic-linq are listed here. The format follows [Keep a
 - `examples/` folder, from basics to an end-to-end async report pipeline.
 - CI on Windows and Linux for Python 3.12 to 3.14. Releases publish to PyPI through trusted publishing when a tag is pushed.
 
-[Unreleased]: https://github.com/codejunction/pydantic-linq/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/codejunction/pydantic-linq/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/codejunction/pydantic-linq/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/codejunction/pydantic-linq/releases/tag/v0.1.0
