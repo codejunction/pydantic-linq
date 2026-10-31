@@ -43,3 +43,15 @@ These are the runnable scripts in [`examples/`](https://github.com/codejunction/
 ```python
 --8<-- "examples/07_sales_report.py"
 ```
+
+## 08 Entity Framework (SQLModel)
+
+```python
+--8<-- "examples/08_entity_framework.py"
+```
+
+## 09 Entity Framework, async
+
+```python
+--8<-- "examples/09_entity_framework_async.py"
+```

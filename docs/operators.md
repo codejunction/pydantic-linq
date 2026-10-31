@@ -61,6 +61,10 @@ Every `System.Linq.Enumerable` operator and its pydantic-linq name. `AsyncEnumer
 | | `ToDictionary` | `to_dictionary(key[, element])` |
 | | `ToAsyncEnumerable` | `to_async_enumerable()` |
 
+## Queryable (Entity Framework)
+
+`Queryable` from `pydantic_linq.orm` has every operator on this page too. The ones EF Core translates run as SQL; the rest run in memory over the results. See [Entity Framework](orm.md) for which is which, and for EF's own operators (`include`, `as_no_tracking`, `execute_update`, the `*_async` terminals, ...).
+
 ## Not ported
 
 - **`IEqualityComparer<T>` arguments.** Use the `*_by` variants with a key function, or define `__eq__`/`__hash__` (or `frozen=True`) on the model.

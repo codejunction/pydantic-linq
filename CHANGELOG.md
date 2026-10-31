@@ -8,6 +8,12 @@ All notable changes to pydantic-linq are listed here. The format follows [Keep a
 
 - Documentation site on GitHub Pages: guides, a C# to Python operator map, and an API reference generated from the docstrings.
 - This changelog.
+- `pydantic_linq.orm`: Entity Framework Core for SQLModel (install `pydantic-linq[sqlmodel]`).
+  - `Queryable[T]` (`IQueryable<T>`): LINQ operators that build one SQL statement. `where`, `select`, `select_many` over navigations, the sort operators, `skip`/`take`, `distinct`, the set operators, `join`/`left_join`/`right_join`, `group_by` (GROUP BY / HAVING), `count_by` and every element, quantifier and aggregate operator run in SQL. Operators SQL can't express run in memory over the results; an untranslatable `where` raises `InvalidOperationError`, as in EF Core.
+  - EF query features: `include`, `then_include`, `as_no_tracking`, `as_split_query`/`as_single_query`, `tag_with`, `to_query_string`, `load`, `execute_update`, `execute_delete`, `as_enumerable`, `as_async_enumerable`.
+  - Every terminal operator has a `*_async` twin (`to_list_async`, `first_async`, `count_async`, ...) for an `AsyncEngine` / `AsyncSession`.
+  - `DbContext`: `set`, `add`/`add_range`, `attach`, `update`, `remove`/`remove_range`, `find`, `save_changes`, `clear`, `from_sql`, `execute_sql`, `begin_transaction`, `ensure_created`/`ensure_deleted`, and their async versions.
+- Examples `08_entity_framework.py` and `09_entity_framework_async.py`.
 
 ## [0.1.0] - 2026-10-30
 

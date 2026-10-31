@@ -40,6 +40,35 @@ ages = await rows.to_async_enumerable().where(lambda r: r.id > 1).select(load_ag
 
 A selector or predicate can be a plain function or an `async def`, so there are no separate `*Await` overloads. Terminal operators keep the sync names (`to_list`, `first`, `count`) and are awaited. The C# `Async` suffix is dropped.
 
+## Entity Framework (SQLModel)
+
+`pydantic_linq.orm` is Entity Framework Core for SQLModel. The same LINQ operators build SQL, and the EF features are there: `DbContext`, `include` / `then_include`, `as_no_tracking`, `execute_update` / `execute_delete`, `from_sql`, and a `*_async` twin of every terminal operator.
+
+```bash
+pip install "pydantic-linq[sqlmodel]"
+```
+
+```python
+from sqlmodel import create_engine
+from sqlalchemy.ext.asyncio import create_async_engine
+from pydantic_linq.orm import DbContext
+
+with DbContext(create_engine("sqlite:///app.db")) as db:
+    db.set(Hero).where(lambda h: (h.age > 30) & (h.team_id == 1)).order_by(lambda h: h.name).take(10).to_list()
+    # SELECT ... FROM hero WHERE hero.age > 30 AND hero.team_id = 1 ORDER BY hero.name LIMIT 10
+
+    db.set(Hero).group_by(lambda h: h.team_id).select(lambda g: (g.key, g.count(), g.average(lambda h: h.age))).to_list()
+    # SELECT hero.team_id, count(*), avg(hero.age) FROM hero GROUP BY hero.team_id
+
+    db.set(Hero).include(lambda h: h.team).first(lambda h: h.name == "Tony")
+    db.set(Hero).where(lambda h: h.age > 100).execute_update(lambda h: {h.age: h.age + 1})
+
+async with DbContext(create_async_engine("sqlite+aiosqlite:///app.db")) as db:
+    adults = await db.set(Hero).where(lambda h: h.age >= 18).to_list_async()
+```
+
+A lambda is called with the model class, so it builds a SQLAlchemy expression. Combine conditions with `&`, `|` and `~`, not `and`, `or` and `not`. A `select` SQL can't express runs in memory, as EF's client projection does, and so does every operator EF doesn't translate. The [Entity Framework guide](https://codejunction.github.io/pydantic-linq/orm/) maps each EF Core feature.
+
 ## Conventions
 
 - Method names are the C# names in snake_case: `OrderByDescending` becomes `order_by_descending`. `Except` becomes `except_`, because `except` is a Python keyword. The [operator map](https://codejunction.github.io/pydantic-linq/operators/) lists every operator.
@@ -58,7 +87,7 @@ Importing the package uses [forbiddenfruit](https://github.com/clarete/forbidden
 
 ## Examples
 
-`examples/` runs from simple to complex: `01_basics` through `07_sales_report`, an end-to-end report pipeline. Run any of them with `uv run python examples/01_basics.py`.
+`examples/` runs from simple to complex: `01_basics` through `07_sales_report`, an end-to-end report pipeline, then `08_entity_framework` and `09_entity_framework_async` for database queries. Run any of them with `uv run python examples/01_basics.py`.
 
 ## Layout
 
@@ -73,6 +102,7 @@ src/pydantic_linq/
     grouping.py   Grouping (an Enumerable with .key), Lookup
   aio/            AsyncEnumerable, same layout as sync/
   integrations/   pydantic field schema, builtin patching
+  orm/            Entity Framework over SQLModel: Queryable, DbContext (optional extra)
 docs/             documentation site (MkDocs); the API reference is generated from the docstrings
 ```
 

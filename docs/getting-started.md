@@ -10,6 +10,8 @@ uv add pydantic-linq
 
 You need Python 3.12 or later and Pydantic 2.
 
+For [Entity Framework style database queries](orm.md) through SQLModel, install the extra: `pip install "pydantic-linq[sqlmodel]"`.
+
 ## Two ways in
 
 **On builtins.** Importing the package adds the operators to `list`, `tuple`, `set` and `frozenset`:

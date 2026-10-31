@@ -30,11 +30,13 @@ nav:
       - Async: async.md
       - Pydantic: pydantic.md
       - Builtin patching: builtins.md
+      - Entity Framework (SQLModel): orm.md
       - Examples: examples.md
   - API reference:
       - Enumerable: api/enumerable.md
       - AsyncEnumerable: api/async-enumerable.md
       - Grouping, Lookup, errors: api/misc.md
+      - Entity Framework (orm): api/orm.md
   - Changelog: changelog.md
 
 markdown_extensions:

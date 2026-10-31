@@ -26,6 +26,7 @@ rows.group_by(lambda r: r.tag).select(lambda g: (g.key, g.count())).to_list()  #
 - **Deferred and re-enumerable.** A query does nothing until you enumerate it, and you can enumerate it again, as in .NET.
 - **Typed.** Generics flow through every operator, so `rows.select(lambda r: r.id)` is an `Enumerable[int]` to pyright and mypy.
 - **Pydantic-aware.** `cast(Model)` validates raw dicts. `Enumerable[Model]` works as a field type. The set operators compare models by value. See [Pydantic](pydantic.md).
+- **Entity Framework too.** `pydantic_linq.orm` runs the same LINQ as SQL through SQLModel, with `DbContext`, `include`, `execute_update` and the `*_async` operators. See [Entity Framework](orm.md).
 - **Async too.** `AsyncEnumerable` takes sync or async sources and sync or async selectors. See [Async](async.md).
 
 ## Next
