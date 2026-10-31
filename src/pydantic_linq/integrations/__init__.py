@@ -1,1 +1,1 @@
-"""Integration layer: hooks into pydantic and Python builtins."""
+"""Integration layer: hooks into pydantic."""

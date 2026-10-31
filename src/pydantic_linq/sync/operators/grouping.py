@@ -23,10 +23,14 @@ class GroupingOps[T](EnumerableBase[T]):
         self, key_selector: Callable[[T], K], element_selector: Callable[[T], E]
     ) -> Enumerable[Grouping[K, E]]: ...
     @overload
+    def group_by[K, R](
+        self, key_selector: Callable[[T], K], *, result_selector: Callable[[K, Enumerable[T]], R]
+    ) -> Enumerable[R]: ...
+    @overload
     def group_by[K, E, R](
         self,
         key_selector: Callable[[T], K],
-        element_selector: Callable[[T], E] | None = None,
+        element_selector: Callable[[T], E],
         *,
         result_selector: Callable[[K, Enumerable[E]], R],
     ) -> Enumerable[R]: ...

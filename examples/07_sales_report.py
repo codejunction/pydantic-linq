@@ -45,7 +45,7 @@ class Report(BaseModel):
     best_day: date
 
 
-CATALOG = [Product(sku="W-1", name="Widget", price=4.5), Product(sku="G-9", name="Gadget", price=30.0)]
+CATALOG = Enumerable([Product(sku="W-1", name="Widget", price=4.5), Product(sku="G-9", name="Gadget", price=30.0)])
 
 
 async def price_lookup(sku: str) -> float | None:
@@ -56,7 +56,8 @@ async def price_lookup(sku: str) -> float | None:
 
 async def build_report() -> Report:
     # 1. Validate the raw JSON and drop duplicate records (value equality on models)
-    orders = Enumerable(RAW_ORDERS).cast(Order).distinct().to_list()
+    # to_list() runs the validation once; wrapping the list again gives a typed, reusable Enumerable
+    orders = Enumerable(Enumerable(RAW_ORDERS).cast(Order).distinct().to_list())
 
     # 2. SKUs with no catalog entry: except_by against the catalog keys
     unknown = orders.except_by(CATALOG.select(lambda p: p.sku), lambda o: o.sku).select(lambda o: o.sku).to_list()
@@ -76,7 +77,8 @@ async def build_report() -> Report:
 
     # 4. Per-customer rows, highest revenue first
     rows = (
-        lines.group_by(lambda line: line[0].customer)
+        Enumerable(lines)
+        .group_by(lambda line: line[0].customer)
         .select(
             lambda g: CustomerRow(
                 customer=g.key,
@@ -93,7 +95,7 @@ async def build_report() -> Report:
     # 5. Day with the most units shipped
     best_day = orders.aggregate_by(lambda o: o.day, 0, lambda n, o: n + o.qty).max_by(lambda kv: kv[1])[0]
 
-    return Report(rows=rows, unknown_skus=unknown, best_day=best_day)
+    return Report(rows=Enumerable(rows), unknown_skus=unknown, best_day=best_day)
 
 
 report = asyncio.run(build_report())

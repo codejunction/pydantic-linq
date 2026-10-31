@@ -4,7 +4,6 @@ import asyncio
 
 from pydantic import BaseModel
 
-import pydantic_linq  # noqa: F401
 from pydantic_linq import AsyncEnumerable
 
 
@@ -54,10 +53,10 @@ async def main() -> None:
     )
     print("popular ids:", popular)
 
-    # Sync lists enter async with to_async_enumerable(); terminal operators are awaited
+    # A sync list enters async through AsyncEnumerable(...); terminal operators are awaited
     local = [User(id=10, name="eve"), User(id=11, name="fay")]
-    print("total followers:", await local.to_async_enumerable().select(fetch_profile).sum(lambda p: p.followers))
-    print("first:", (await local.to_async_enumerable().first(lambda u: u.id > 10)).name)
+    print("total followers:", await AsyncEnumerable(local).select(fetch_profile).sum(lambda p: p.followers))
+    print("first:", (await AsyncEnumerable(local).first(lambda u: u.id > 10)).name)
 
     # Grouping yields AsyncGrouping, an AsyncEnumerable with a .key
     async for g in AsyncEnumerable(fetch_users()).group_by(lambda u: u.id % 2 == 0):

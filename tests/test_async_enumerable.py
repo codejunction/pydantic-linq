@@ -3,7 +3,7 @@ import asyncio
 import pytest
 from pydantic import BaseModel
 
-from pydantic_linq import AsyncEnumerable, InvalidOperationError
+from pydantic_linq import AsyncEnumerable, Enumerable, InvalidOperationError
 
 A = AsyncEnumerable
 
@@ -42,7 +42,7 @@ def test_sources_selectors_and_reenumeration():
     assert run(q.to_list()) == [31, 25, 31]
     assert run(q.to_list()) == [31, 25, 31]
     assert run(A(agen([1, 2])).select(str).to_list()) == ["1", "2"]
-    assert run(PEOPLE.to_async_enumerable().count()) == 4
+    assert run(Enumerable(PEOPLE).to_async_enumerable().count()) == 4
 
 
 def test_generation_projection_partitioning():

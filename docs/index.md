@@ -8,13 +8,13 @@ pip install pydantic-linq
 
 ```python
 from pydantic import BaseModel
-import pydantic_linq  # adds LINQ operators to list / tuple / set / frozenset
+from pydantic_linq import Enumerable
 
 class Row(BaseModel):
     id: int
     tag: str
 
-rows = [Row(id=1, tag="a"), Row(id=2, tag="b"), Row(id=3, tag="a")]
+rows = Enumerable([Row(id=1, tag="a"), Row(id=2, tag="b"), Row(id=3, tag="a")])
 
 rows.where(lambda r: r.tag == "a").select(lambda r: r.id).to_list()         # [1, 3]
 rows.group_by(lambda r: r.tag).select(lambda g: (g.key, g.count())).to_list()  # [('a', 2), ('b', 1)]

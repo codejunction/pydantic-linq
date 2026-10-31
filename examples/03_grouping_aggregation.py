@@ -4,7 +4,7 @@ from datetime import date
 
 from pydantic import BaseModel
 
-import pydantic_linq  # noqa: F401
+from pydantic_linq import Enumerable
 
 
 class Sale(BaseModel):
@@ -14,13 +14,13 @@ class Sale(BaseModel):
     day: date
 
 
-sales = [
+sales = Enumerable([
     Sale(region="North", rep="Ann", amount=120.0, day=date(2026, 1, 3)),
     Sale(region="North", rep="Bob", amount=80.0, day=date(2026, 1, 4)),
     Sale(region="South", rep="Cid", amount=200.0, day=date(2026, 1, 4)),
     Sale(region="North", rep="Ann", amount=60.0, day=date(2026, 2, 1)),
     Sale(region="South", rep="Dee", amount=40.0, day=date(2026, 2, 2)),
-]
+])
 
 # GroupBy with a result selector: one summary row per region
 summary = sales.group_by(
@@ -44,4 +44,4 @@ print("revenue per rep:", sales.aggregate_by(lambda s: s.rep, 0.0, lambda acc, s
 # Scalar aggregates
 print("total:", sales.sum(lambda s: s.amount))
 print("biggest sale:", sales.max_by(lambda s: s.amount).rep)
-print("running product:", [1, 2, 3, 4].aggregate(lambda a, b: a * b))
+print("running product:", Enumerable([1, 2, 3, 4]).aggregate(lambda a, b: a * b))

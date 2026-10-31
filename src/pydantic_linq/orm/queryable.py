@@ -446,10 +446,14 @@ class Queryable[T](Enumerable[T]):
         self, key_selector: Callable[[T], K], element_selector: Callable[[T], E]
     ) -> GroupedQueryable[K, E]: ...
     @overload
+    def group_by[K, R](
+        self, key_selector: Callable[[T], K], *, result_selector: Callable[[K, Enumerable[T]], R]
+    ) -> Queryable[R]: ...
+    @overload
     def group_by[K, E, R](
         self,
         key_selector: Callable[[T], K],
-        element_selector: Callable[[T], E] | None = None,
+        element_selector: Callable[[T], E],
         *,
         result_selector: Callable[[K, Enumerable[E]], R],
     ) -> Queryable[R]: ...

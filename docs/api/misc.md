@@ -11,7 +11,3 @@
 ::: pydantic_linq.Lookup
 
 ::: pydantic_linq.InvalidOperationError
-
-::: pydantic_linq.install
-
-::: pydantic_linq.uninstall

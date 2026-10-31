@@ -31,7 +31,7 @@ asyncio.run(main())
 
 ## Rules
 
-- **Sources.** Pass any `AsyncIterable` or plain `Iterable`. From a sync sequence you can also call `.to_async_enumerable()`.
+- **Sources.** Pass any `AsyncIterable` or plain `Iterable`. From an `Enumerable` you can also call `.to_async_enumerable()`.
 - **Sync or async callables.** Every selector, predicate, key and result selector can be a plain function or return an awaitable. That covers both the System.Linq.Async `*Await` overloads (`SelectAwait`, `WhereAwait`, ...) and the .NET 10 `AsyncEnumerable` overloads, with one method each.
 - **Terminal operators are awaited.** `await q.to_list()`, `await q.first()`, `await q.count()`, and so on. The names drop the C# `Async` suffix (`ToListAsync` becomes `to_list`).
 - **Sequence operators are deferred**, as in the sync version. Iterate them with `async for`.

@@ -9,7 +9,7 @@ Any change under `src/` or `examples/` (a new operator, a behavior change, a bug
 1. **`CHANGELOG.md`** has an entry under `## [Unreleased]`, in the matching Keep a Changelog section: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed` or `Security`. Write one line per change, from the user's point of view.
 2. **`docs/`** reflects the change:
    - a new or renamed operator: update `docs/operators.md`;
-   - a behavior or convention change: update the guide page it affects (`getting-started`, `async`, `pydantic`, `builtins` or `orm`);
+   - a behavior or convention change: update the guide page it affects (`getting-started`, `async`, `pydantic` or `orm`);
    - a new example: add it to `docs/examples.md`.
 
    The API reference (`docs/api/`) is generated from the docstrings, so keep the docstrings accurate.
@@ -25,7 +25,7 @@ Each layer depends only on the layers listed above it:
 - `src/pydantic_linq/core/`: errors, the value-equality set, group and sort helpers. No internal dependencies.
 - `src/pydantic_linq/sync/`: `Enumerable`. `operators/` has one mixin per LINQ category, combined in `enumerable.py`.
 - `src/pydantic_linq/aio/`: `AsyncEnumerable`, with the same layout.
-- `src/pydantic_linq/integrations/`: the pydantic field schema and the builtin patching (forbiddenfruit).
+- `src/pydantic_linq/integrations/`: the pydantic field schema. The package never patches builtins: users wrap iterables in `Enumerable(...)` so every operator stays typed.
 - `src/pydantic_linq/orm/`: Entity Framework over SQLModel. `translation.py` turns lambdas into SQL, `queryable.py` is `Queryable` (composition plus `_plan_*` terminal plans run by a sync and an async driver), `grouping.py` is `GroupedQueryable`, `context.py` is `DbContext`. Optional dependency: never import it from the package root.
 
 A new operator goes in the mixin for its category, in both `sync/operators/` and `aio/operators/`. If EF Core translates it, also override it on `orm.Queryable` (with a `*_async` twin for a terminal operator); otherwise `Queryable` inherits the in-memory version.
@@ -33,9 +33,9 @@ A new operator goes in the mixin for its category, in both `sync/operators/` and
 ## Checks
 
 ```bash
-uv run pytest -q
+uv run pytest -q              # also runs examples/fastapi_blog/test_blog.py
 uvx ruff check
-uvx pyright src
+uvx pyright src examples
 for f in examples/*.py; do uv run python "$f" > /dev/null; done
 uv run --group docs mkdocs build --strict
 ```

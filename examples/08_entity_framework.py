@@ -40,8 +40,8 @@ with DbContext(create_engine("sqlite://")) as db:
 
     posts = db.set(Post)  # DbSet<Post>
 
-    # Lambdas build SQL: use & | ~ for and / or / not.
-    popular = posts.where(lambda p: (p.likes > 100) & ~col(p.title).contains("3.12")).order_by_descending(lambda p: p.likes)
+    # Lambdas build SQL: use & | ~ for and / or / not, and col() so type checkers see a column.
+    popular = posts.where(lambda p: (col(p.likes) > 100) & ~col(p.title).contains("3.12")).order_by_descending(lambda p: p.likes)
     print(popular.to_query_string())
     print("popular:", popular.select(lambda p: p.title).to_list())
 

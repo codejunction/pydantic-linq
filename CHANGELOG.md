@@ -4,6 +4,18 @@ All notable changes to pydantic-linq are listed here. The format follows [Keep a
 
 ## [Unreleased]
 
+### Removed
+
+- Builtin patching. Importing the package no longer adds LINQ methods to `list`, `tuple`, `set` and `frozenset`, and `install()` / `uninstall()` are gone, as is the `forbiddenfruit` dependency. Type checkers could never see the patched methods. Wrap the collection instead: `Enumerable(rows).where(...)`, or `AsyncEnumerable(rows)` for async.
+
+### Fixed
+
+- `group_by(key, result_selector=...)` without an element selector now types the group as `Enumerable[T]` instead of `Enumerable[object]` (sync, async and `orm.Queryable`).
+
+### Added
+
+- `examples/fastapi_blog/`: a FastAPI blog post API over SQLite (authors, posts, comments, search, tags, paging, stats) built on `pydantic_linq.orm`, with an end-to-end test.
+
 ## [0.1.1] - 2026-10-31
 
 ### Added

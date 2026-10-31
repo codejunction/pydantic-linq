@@ -55,3 +55,16 @@ These are the runnable scripts in [`examples/`](https://github.com/codejunction/
 ```python
 --8<-- "examples/09_entity_framework_async.py"
 ```
+
+## FastAPI blog API
+
+[`examples/fastapi_blog/`](https://github.com/codejunction/pydantic-linq/tree/main/examples/fastapi_blog) is a complete async REST API over SQLite: authors, posts and comments, with search, tag filters, sorting, paging and stats. Every query is LINQ through `pydantic_linq.orm`. `test_blog.py` drives it end to end and runs with the test suite.
+
+```bash
+pip install "pydantic-linq[sqlmodel]" "fastapi[standard]" aiosqlite
+fastapi dev examples/fastapi_blog/blog.py   # open http://127.0.0.1:8000/docs
+```
+
+```python
+--8<-- "examples/fastapi_blog/blog.py"
+```

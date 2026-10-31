@@ -29,7 +29,6 @@ nav:
       - Operator map (C# to Python): operators.md
       - Async: async.md
       - Pydantic: pydantic.md
-      - Builtin patching: builtins.md
       - Entity Framework (SQLModel): orm.md
       - Examples: examples.md
   - API reference:

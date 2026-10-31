@@ -23,10 +23,14 @@ class GroupingOps[T](AsyncEnumerableBase[T]):
         self, key_selector: Fn[[T], K], element_selector: Fn[[T], E]
     ) -> AsyncEnumerable[AsyncGrouping[K, E]]: ...
     @overload
+    def group_by[K, R](
+        self, key_selector: Fn[[T], K], *, result_selector: Fn[[K, AsyncEnumerable[T]], R]
+    ) -> AsyncEnumerable[R]: ...
+    @overload
     def group_by[K, E, R](
         self,
         key_selector: Fn[[T], K],
-        element_selector: Fn[[T], E] | None = None,
+        element_selector: Fn[[T], E],
         *,
         result_selector: Fn[[K, AsyncEnumerable[E]], R],
     ) -> AsyncEnumerable[R]: ...

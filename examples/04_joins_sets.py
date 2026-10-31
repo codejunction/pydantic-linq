@@ -2,7 +2,7 @@
 
 from pydantic import BaseModel
 
-import pydantic_linq  # noqa: F401
+from pydantic_linq import Enumerable
 
 
 class Customer(BaseModel):
@@ -15,13 +15,13 @@ class Order(BaseModel):
     item: str
 
 
-customers = [Customer(id=1, name="Ann"), Customer(id=2, name="Bob"), Customer(id=3, name="Cid")]
-orders = [
+customers = Enumerable([Customer(id=1, name="Ann"), Customer(id=2, name="Bob"), Customer(id=3, name="Cid")])
+orders = Enumerable([
     Order(customer_id=1, item="book"),
     Order(customer_id=1, item="pen"),
     Order(customer_id=3, item="lamp"),
     Order(customer_id=9, item="ghost"),
-]
+])
 
 # Inner join
 print("join:", customers.join(orders, lambda c: c.id, lambda o: o.customer_id, lambda c, o: (c.name, o.item)).to_list())
@@ -49,8 +49,8 @@ print(
 )
 
 # Set operations use value equality, so equal (non-frozen) models count as duplicates
-batch_a = [Customer(id=1, name="Ann"), Customer(id=2, name="Bob")]
-batch_b = [Customer(id=2, name="Bob"), Customer(id=4, name="Dee")]
+batch_a = Enumerable([Customer(id=1, name="Ann"), Customer(id=2, name="Bob")])
+batch_b = Enumerable([Customer(id=2, name="Bob"), Customer(id=4, name="Dee")])
 print("union:", batch_a.union(batch_b).select(lambda c: c.name).to_list())
 print("intersect:", batch_a.intersect(batch_b).select(lambda c: c.name).to_list())
 print("except:", batch_a.except_(batch_b).select(lambda c: c.name).to_list())

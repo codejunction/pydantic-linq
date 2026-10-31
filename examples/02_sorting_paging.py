@@ -2,7 +2,7 @@
 
 from pydantic import BaseModel
 
-import pydantic_linq  # noqa: F401
+from pydantic_linq import Enumerable
 
 
 class Employee(BaseModel):
@@ -11,13 +11,13 @@ class Employee(BaseModel):
     salary: int
 
 
-staff = [
+staff = Enumerable([
     Employee(name="Ava", dept="Eng", salary=120),
     Employee(name="Ben", dept="Ops", salary=90),
     Employee(name="Cleo", dept="Eng", salary=120),
     Employee(name="Dan", dept="Eng", salary=105),
     Employee(name="Eve", dept="Ops", salary=95),
-]
+])
 
 # Multi-key, stable sort: dept ascending, then salary descending, then name
 ordered = staff.order_by(lambda e: e.dept).then_by_descending(lambda e: e.salary).then_by(lambda e: e.name)

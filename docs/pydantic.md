@@ -5,7 +5,7 @@
 C# `Cast<T>` only casts references. Here `cast` validates each element with a pydantic `TypeAdapter`, so dicts become models and values are coerced:
 
 ```python
-raw = [{"sku": "A-1", "qty": "2"}]
+raw = Enumerable([{"sku": "A-1", "qty": "2"}])
 items = raw.cast(LineItem).to_list()          # [LineItem(sku='A-1', qty=2)]
 raw.cast(LineItem, strict=True).to_list()     # raises ValidationError: no coercion
 ```
@@ -37,7 +37,7 @@ inv.model_dump()                 # {'lines': [{'sku': 'A-1', 'qty': 2}]}
 Non-frozen pydantic models compare by field values (`==`) but are unhashable. The set operators (`distinct`, `union`, `intersect`, `except_` and their `*_by` forms) and `contains` all use value equality, so they work on such models directly:
 
 ```python
-[Item(id=1), Item(id=1)].distinct().count()  # 1
+Enumerable([Item(id=1), Item(id=1)]).distinct().count()  # 1
 ```
 
 !!! tip "Performance"
