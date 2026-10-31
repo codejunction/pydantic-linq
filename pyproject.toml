@@ -1,6 +1,6 @@
 [project]
 name = "pydantic-linq"
-version = "0.1.1"
+version = "0.2.0"
 description = "C# LINQ (Enumerable + AsyncEnumerable) for Python, typed and Pydantic-aware"
 readme = "README.md"
 license = "MIT"

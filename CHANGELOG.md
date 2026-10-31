@@ -4,6 +4,8 @@ All notable changes to pydantic-linq are listed here. The format follows [Keep a
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-31
+
 ### Removed
 
 - Builtin patching. Importing the package no longer adds LINQ methods to `list`, `tuple`, `set` and `frozenset`, and `install()` / `uninstall()` are gone, as is the `forbiddenfruit` dependency. Type checkers could never see the patched methods. Wrap the collection instead: `Enumerable(rows).where(...)`, or `AsyncEnumerable(rows)` for async.
@@ -45,6 +47,7 @@ All notable changes to pydantic-linq are listed here. The format follows [Keep a
 - `examples/` folder, from basics to an end-to-end async report pipeline.
 - CI on Windows and Linux for Python 3.12 to 3.14. Releases publish to PyPI through trusted publishing when a tag is pushed.
 
-[Unreleased]: https://github.com/codejunction/pydantic-linq/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/codejunction/pydantic-linq/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/codejunction/pydantic-linq/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/codejunction/pydantic-linq/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/codejunction/pydantic-linq/releases/tag/v0.1.0
